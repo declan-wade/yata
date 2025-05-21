@@ -58,7 +58,7 @@ export function TodoSidebar({
 
     try {
       await updateTodo(selectedTodo.id, updateData);
-      onMarkComplete(); // Refresh UI
+     // onMarkComplete(); // Refresh UI
     } catch (error) {
       console.error("Failed to update todo:", error);
       // Optionally, handle error display to the user
