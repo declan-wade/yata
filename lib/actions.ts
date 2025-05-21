@@ -80,7 +80,7 @@ export async function createTodo(
 // Server action to update a todo's details
 export async function updateTodo(
   id: number,
-  todoData: Partial<Todo>,
+  todoData: any,
 ): Promise<Todo> {
   try {
     // Here you would implement your database update logic
