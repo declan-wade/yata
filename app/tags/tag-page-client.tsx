@@ -19,17 +19,17 @@ interface TagPageClientProps {
 export default function TagPageClient({ todos, initialTags }: TagPageClientProps) {
   const [tagList, setTagList] = React.useState<TodoTag[]>(initialTags);
 
-  const handleCreateTag = (tag: TodoTag) => {
+  const handleCreateTag = (tag: any) => {
     setTagList((prev) => [...prev, tag]);
   };
 
   // Placeholder functions for update and delete operations
-  const handleUpdateTag = (tag: TodoTag) => {
+  const handleUpdateTag = (tag: any) => {
     // Logic to update a tag will be implemented later
     console.log("Update tag:", tag);
   };
 
-  const handleDeleteTag = (tagId: string) => {
+  const handleDeleteTag = (tagId: any) => {
     // Logic to delete a tag will be implemented later
     console.log("Delete tag:", tagId);
     // setTagList((prev) => prev.filter(tag => tag.id !== tagId)); // Example implementation
