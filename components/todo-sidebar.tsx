@@ -27,6 +27,7 @@ import { TodoSidebarProps } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
 import { DateTimePicker } from "./datetime-picker";
+import { updateTodo } from "@/lib/actions";
 
 export function TodoSidebar({
   selectedTodo,
@@ -46,9 +47,24 @@ export function TodoSidebar({
   };
 
   // Helper to save (stub, replace with your save logic)
-  const saveEdit = () => {
-    // TODO: Call your update logic here
-    setEditingField(null);
+  const saveEdit = async () => {
+    if (!selectedTodo || !editingField) {
+      return;
+    }
+
+    const updateData = {
+      [editingField]: editValue,
+    };
+
+    try {
+      await updateTodo(selectedTodo.id, updateData);
+      onMarkComplete(); // Refresh UI
+    } catch (error) {
+      console.error("Failed to update todo:", error);
+      // Optionally, handle error display to the user
+    } finally {
+      setEditingField(null);
+    }
   };
 
   return (

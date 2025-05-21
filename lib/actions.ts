@@ -89,16 +89,13 @@ export async function updateTodo(
     //   where: { id },
     //   data: todoData
     // });
+    const updatedTodo = await prisma.todo.update({
+      where: { id },
+      data: todoData,
+    });
 
     // Revalidate the homepage to refresh server data
     revalidatePath("/");
-
-    // For demo purposes, simulating a response
-    const updatedTodo = {
-      id,
-      ...todoData,
-      updatedAt: new Date().toISOString(),
-    } as Todo;
 
     return updatedTodo;
   } catch (error) {
