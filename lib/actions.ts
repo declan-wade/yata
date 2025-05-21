@@ -53,7 +53,7 @@ export async function deleteTodo(id: number): Promise<{ success: boolean }> {
 // Server action to create a new todo
 export async function createTodo(
   todoData: Omit<Todo, "id" | "createdAt" | "updatedAt">,
-): Promise<Todo> {
+): Promise<any> {
   try {
     // Here you would implement your database create logic
     // Example with a hypothetical database function:
@@ -81,7 +81,7 @@ export async function createTodo(
 export async function updateTodo(
   id: number,
   todoData: any,
-): Promise<Todo> {
+): Promise<any> {
   try {
     // Here you would implement your database update logic
     // Example with a hypothetical database function:
