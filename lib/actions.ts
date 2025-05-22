@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { Todo } from "./types";
 import { PrismaClient } from "@prisma/client";
+import { stackServerApp } from "@/stack";
 
 const prisma = new PrismaClient();
-
 
 // Server action to update a todo's status
 export async function updateTodoStatus(
@@ -13,13 +13,9 @@ export async function updateTodoStatus(
   isComplete: boolean,
 ): Promise<any> {
   try {
-    // Here you would implement your database update logic
-    // Example with a hypothetical database function:
-    // await db.todos.update({ where: { id }, data: { completed } });
-
-    // For demo purposes, simulating a response
+    const user = await stackServerApp.getUser();
     const updatedTodo = prisma.todo.update({
-      where: { id },
+      where: { id: id },
       data: { isComplete },
     });
 
@@ -47,33 +43,6 @@ export async function deleteTodo(id: number): Promise<{ success: boolean }> {
   } catch (error) {
     console.error("Error deleting todo:", error);
     throw new Error("Failed to delete todo");
-  }
-}
-
-// Server action to create a new todo
-export async function createTodo(
-  todoData: Omit<Todo, "id" | "createdAt" | "updatedAt">,
-): Promise<any> {
-  try {
-    // Here you would implement your database create logic
-    // Example with a hypothetical database function:
-    // const newTodo = await db.todos.create({ data: todoData });
-
-    // Revalidate the homepage to refresh server data
-    revalidatePath("/");
-
-    // For demo purposes, simulating a response
-    const newTodo = {
-      ...todoData,
-      id: Date.now(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    } as Todo;
-
-    return newTodo;
-  } catch (error) {
-    console.error("Error creating todo:", error);
-    throw new Error("Failed to create todo");
   }
 }
 

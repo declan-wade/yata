@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
 }
 
 datasource db {
@@ -11,22 +8,25 @@ datasource db {
 }
 
 model Todo {
-  id          Int       @id @default(autoincrement())
-  order       Int       @default(autoincrement())
+  id          Int        @id @default(autoincrement())
+  order       Int        @default(autoincrement())
   name        String
   description String?
   dueDate     DateTime?
-  isComplete  Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  tags        Tag[]     @relation("TodoTags")
+  isComplete  Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      String
+  tags        Tag[]      @relation("TodoTags")
 }
 
 model Tag {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
   icon      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  todos     Todo[]   @relation("TodoTags")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userId    String
+  todos     Todo[]     @relation("TodoTags")
 }
+

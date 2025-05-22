@@ -18,9 +18,11 @@ import {
 } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { getCount } from "@/lib/actions"; // Import your getCount function
+import { useUser } from "@stackframe/stack"
 
 export function AppSidebar({ todos, tags, ...props }: { todos: any[] } & { tags: any[] } & React.ComponentProps<typeof Sidebar>) {
   const [counts, setCounts] = React.useState<{ [key: string]: number }>({});
+  const user = useUser();
 
   // Define nav items
   const navMain = [
@@ -66,7 +68,7 @@ export function AppSidebar({ todos, tags, ...props }: { todos: any[] } & { tags:
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-black">YATA</span>
-                  <span className="">Home</span>
+                  <span className="">{user ? `Hello, ${user.displayName ?? "anon"}` : 'You are not logged in'}</span>
                 </div>
               </a>
             </SidebarMenuButton>
