@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { toast } from "sonner";
 import { DateTimePicker } from "@/components/datetime-picker";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -12,15 +13,36 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createTodo } from "@/lib/database";
+import type { AddTodoProps } from "@/lib/types"; // Import AddTodoProps
 
-export function AddTodo({ tags }: any) {
+export function AddTodo({ tags, onTodoAdded }: AddTodoProps) { // Use AddTodoProps
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [name, setName] = React.useState("");
   const [tag, setTag] = React.useState<number | undefined>(undefined);
 
   async function handleAdd() {
-    const response = await createTodo(name, date, tag);
-    console.log(response);
+    if (!name.trim()) {
+      toast.error("Todo name cannot be empty.");
+      return;
+    }
+
+    const promise = () => createTodo(name, date, tag);
+
+    toast.promise(promise, {
+      loading: "Creating todo...",
+      success: (data) => {
+        setName("");
+        setDate(undefined);
+        setTag(undefined);
+        if (onTodoAdded) {
+          onTodoAdded();
+        }
+        return "Todo created successfully!";
+      },
+      error: (err) => {
+        return "Failed to create todo. Please try again.";
+      },
+    });
   }
 
   return (
@@ -52,7 +74,7 @@ export function AddTodo({ tags }: any) {
           </SelectContent>
         </Select>
       </div>
-      <Button className="shadow-none md:col-span-1" onClick={() => handleAdd()}>
+      <Button className="shadow-none md:col-span-1" onClick={handleAdd}>
         Add <CommandShortcut>⏎</CommandShortcut>
       </Button>
     </div>

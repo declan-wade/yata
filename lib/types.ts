@@ -25,6 +25,7 @@ export interface TodoListProps {
   onSelectTodo: (todo: Todo) => void;
   onToggleComplete: (id: number, completed: boolean) => void;
   onDeleteTodo: (id: number) => void;
+  onTodoAdded?: () => Promise<void>;
 }
 
 // Props for the TodoSidebar component
@@ -40,4 +41,10 @@ export interface TodoDashboardProps {
   initialTodos: Todo[];
   header: string;
   tags: TodoTag[];
+}
+
+// Props for the AddTodo component
+export interface AddTodoProps {
+  tags: TodoTag[];
+  onTodoAdded?: () => Promise<void>;
 }
