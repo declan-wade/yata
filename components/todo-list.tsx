@@ -35,6 +35,7 @@ export function TodoList({
   onSelectTodo,
   onToggleComplete,
   onDeleteTodo,
+  onTodoAdded, // Added onTodoAdded here
 }: TodoListProps) {
   const [showCompleted, setShowCompleted] = useState(true);
   const [orderedTodos, setOrderedTodos] = useState(todos);
@@ -69,7 +70,7 @@ export function TodoList({
 
       <Separator />
       <div className="p-4">
-        <AddTodo tags={tags} />
+        <AddTodo tags={tags} onTodoAdded={onTodoAdded} /> {/* Passed onTodoAdded here */}
       </div>
       <Separator className="p-0 m-0" />
       {filteredTodos.length === 0 ? (
