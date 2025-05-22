@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { AppSidebar } from "@/components/app-sidebar";
+import dynamic from "next/dynamic";
 import { format } from "date-fns"; // Removed unused date-fns imports
 import { Separator } from "@/components/ui/separator";
 import {
@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/sidebar";
 import { TagManagement } from "@/components/tag-management";
 import { Todo, TodoTag } from "@/lib/types";
+
+const AppSidebar = dynamic(() => import('@/components/app-sidebar').then(mod => mod.AppSidebar), { ssr: false });
 
 interface TagPageClientProps {
   todos: Todo[];
