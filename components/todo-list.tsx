@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/tooltip";
 import { AddTodo } from "./add-todo";
 import type { Todo, TodoTag, TodoListProps } from "@/lib/types";
+import { updateTodoOrder } from "@/lib/actions";
 
 const ITEM_TYPE = "TODO_ITEM";
 
@@ -56,6 +57,19 @@ export function TodoList({
     const [removed] = updated.splice(dragIndex, 1);
     updated.splice(hoverIndex, 0, removed);
     setOrderedTodos(updated);
+
+    // Prepare data for the server action
+    const todosToUpdate = updated.map((todo, index) => ({
+      id: todo.id,
+      order: index,
+    }));
+
+    // Call the server action to update the order on the server
+    updateTodoOrder(todosToUpdate).catch((error) => {
+      console.error("Failed to update todo order on server:", error);
+      // Optionally, revert the local state change if the server update fails
+      // For now, we'll just log the error as per requirements
+    });
   };
 
   return (

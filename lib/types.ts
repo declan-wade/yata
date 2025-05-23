@@ -2,7 +2,7 @@
 export interface Todo {
   id: number;
   name: string;
-  order?: number; // Order of the todo in the list
+  order: number; // Order of the todo in the list
   description?: string;
   isComplete: boolean;
   dueDate?: string | Date;
