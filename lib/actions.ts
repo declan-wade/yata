@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Todo } from "./types";
 import { PrismaClient } from "@prisma/client";
 import { stackServerApp } from "@/stack";
 
@@ -16,8 +15,7 @@ export async function setUserName(name: string): Promise<void> {
     await user.update({
       displayName: name,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error setting user name:", error);
     throw new Error("Failed to set user name");
   }
@@ -63,17 +61,8 @@ export async function deleteTodo(id: number): Promise<{ success: boolean }> {
 }
 
 // Server action to update a todo's details
-export async function updateTodo(
-  id: number,
-  todoData: any,
-): Promise<any> {
+export async function updateTodo(id: number, todoData: any): Promise<any> {
   try {
-    // Here you would implement your database update logic
-    // Example with a hypothetical database function:
-    // const updatedTodo = await db.todos.update({
-    //   where: { id },
-    //   data: todoData
-    // });
     const updatedTodo = await prisma.todo.update({
       where: { id },
       data: todoData,
@@ -96,7 +85,7 @@ export async function getCount(): Promise<any> {
         dueDate: null,
         isComplete: false,
       },
-    })
+    });
     const dueToday = await prisma.todo.count({
       where: {
         dueDate: {
@@ -125,7 +114,12 @@ export async function getCount(): Promise<any> {
     });
     // Return the counts as an object
     revalidatePath("/");
-    return {inbox: inbox, dueToday: dueToday, dueThisWeek: dueThisWeek, overdue: overdue};
+    return {
+      inbox: inbox,
+      dueToday: dueToday,
+      dueThisWeek: dueThisWeek,
+      overdue: overdue,
+    };
   } catch (error) {
     console.error("Error fetching count:", error);
     throw new Error("Failed to fetch count");

@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { DndProvider, useDrag, useDrop, DragSourceMonitor, DropTargetMonitor } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Check, Clock, Ellipsis, EllipsisVertical, Tag, Trash2 } from "lucide-react";
+import { Check, Clock, Ellipsis, EllipsisVertical, Eye, Tag, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -240,6 +240,13 @@ function TodoItem({
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               <span>Delete</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => selectTodo(todo)}
+                              className="text-red-500 focus:text-red-500"
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              <span>View</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

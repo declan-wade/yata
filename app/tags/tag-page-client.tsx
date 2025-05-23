@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/sidebar";
 import { TagManagement } from "@/components/tag-management";
 import { Todo, TodoTag } from "@/lib/types";
+import { AccountDropdown } from "@/components/account-dropdown";
+import { useUser } from "@stackframe/stack";
+import { SetName } from "@/components/set-name";
 
 interface TagPageClientProps {
   todos: Todo[];
@@ -18,6 +21,7 @@ interface TagPageClientProps {
 
 export default function TagPageClient({ todos, initialTags }: TagPageClientProps) {
   const [tagList, setTagList] = React.useState<TodoTag[]>(initialTags);
+  const user = useUser();
 
   const handleCreateTag = (tag: any) => {
     setTagList((prev) => [...prev, tag]);
@@ -42,10 +46,12 @@ export default function TagPageClient({ todos, initialTags }: TagPageClientProps
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <div>
-            Today is{" "}
-            <strong>{format(new Date(), "eeee dd MMMM yyyy")}</strong>
-          </div>
+         <div className="flex items-center gap-4">
+          <AccountDropdown />
+          <span className="hidden lg:block">
+            {user && user.displayName ? `Hello, ${user.displayName}` : <SetName />}
+          </span>
+        </div>
         </header>
         <TagManagement
           tags={tagList}
