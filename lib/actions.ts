@@ -131,3 +131,24 @@ export async function getCount(): Promise<any> {
     throw new Error("Failed to fetch count");
   }
 }
+
+// Server action to update the order of todos
+export async function updateTodoOrder(
+  todosToUpdate: { id: number; order: number }[],
+): Promise<void> {
+  try {
+    await prisma.$transaction(
+      todosToUpdate.map((todo) =>
+        prisma.todo.update({
+          where: { id: todo.id },
+          data: { order: todo.order },
+        }),
+      ),
+    );
+
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error updating todo order:", error);
+    throw new Error("Failed to update todo order");
+  }
+}
