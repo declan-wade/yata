@@ -52,7 +52,7 @@ export function AddTodo({ tags, onTodoAdded }: AddTodoProps) { // Use AddTodoPro
         className="shadow-none md:col-span-6"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        onKeyDown={(e) => console.log(e)}
+        onKeyDown={(e) =>e.key === "Enter" ? handleAdd() : null}
       />
       <div className="md:col-span-3">
         <DateTimePicker value={date} onChange={setDate} />

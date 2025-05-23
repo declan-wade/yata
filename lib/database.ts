@@ -57,6 +57,9 @@ export async function getAllTodos() {
     include: {
       tags: true,
     },
+    orderBy: {
+      order: "asc",
+    },
   });
   console.log(response);
   return response as any;
@@ -74,6 +77,9 @@ export async function getInboxTodos() {
       },
     include: {
       tags: true,
+    },
+    orderBy: {
+      order: "asc",
     },
   });
   console.log(response);
@@ -95,6 +101,9 @@ export async function getTodayTodos() {
       },
     include: {
       tags: true,
+    },
+    orderBy: {
+      order: "asc",
     },
   });
   console.log(response);
@@ -146,6 +155,9 @@ export async function getFilteredTodo(tag: string) {
   },
     include: {
       tags: true,
+    },
+    orderBy: {
+      order: "asc",
     },
   });
   return response as any;

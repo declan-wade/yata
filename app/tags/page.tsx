@@ -1,13 +1,8 @@
-// Removed unused React import
-// Removed AppSidebar, date-fns, Separator, Sidebar components, and TagManagement imports
-// as they are now handled by TagPageClient
 import { getAllTags, getAllTodos } from "@/lib/database";
 import { Todo, TodoTag } from "@/lib/types";
 import TagPageClient from "./tag-page-client"; // Import the new client component
 
-
-
-export default async function Home() {
+export default async function Tags() {
   const todos: Todo[] = await getAllTodos();
   const tags: TodoTag[] = await getAllTags();
 

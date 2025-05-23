@@ -47,7 +47,6 @@ export default function TagPageClient({ todos, initialTags }: TagPageClientProps
             <strong>{format(new Date(), "eeee dd MMMM yyyy")}</strong>
           </div>
         </header>
-
         <TagManagement
           tags={tagList}
           onCreateTag={handleCreateTag}
