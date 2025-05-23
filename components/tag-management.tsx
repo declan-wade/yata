@@ -95,7 +95,7 @@ export function TagManagement({
         </Button>
         </div>
       </div>
-      <Separator />
+      <Separator className="p-0 m-0" />
       
         {tags.length === 0 ? (
           <div className="text-center text-muted-foreground">

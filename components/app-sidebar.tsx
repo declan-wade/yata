@@ -90,7 +90,7 @@ export function AppSidebar({ todos, tags, ...props }: { todos: any[] } & { tags:
                   {tags ? tags.map((item) => {
                     const Icon = item.icon && (Icons as any)[toPascalCase(item.icon)] || null;
                     return (
-                      <DropdownMenu key={item.title}>
+                      <DropdownMenu key={item.id}>
                         <SidebarMenuItem>
                           <DropdownMenuTrigger asChild>
                             <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground flex items-center justify-between">

@@ -77,7 +77,7 @@ export function TodoSidebar({
             <div className="flex flex-col gap-0.5 leading-none p-2">
               {editingField === "name" ? (
                 <input
-                  className="font-medium text-lg"
+                  className="font-medium text-md"
                   value={editValue}
                   autoFocus
                   onChange={e => setEditValue(e.target.value)}
@@ -86,7 +86,7 @@ export function TodoSidebar({
                 />
               ) : (
                 <span
-                  className="font-medium text-lg cursor-pointer"
+                  className="font-medium text-md cursor-pointer"
                   onClick={() => startEditing("name", selectedTodo?.name || "")}
                 >
                   {selectedTodo?.name}

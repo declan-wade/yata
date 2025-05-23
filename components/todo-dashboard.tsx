@@ -16,6 +16,8 @@ import { getAllTodos } from "@/lib/database";
 import { useUser } from "@stackframe/stack";
 import { SetName } from "./set-name";
 import { CircleUserRound } from "lucide-react";
+import { Button } from "./ui/button";
+import { AccountDropdown } from "./account-dropdown";
 
 export default function TodoDashboard({
   initialTodos,
@@ -96,7 +98,7 @@ export default function TodoDashboard({
             </div>
             </div>
             <div className="flex items-center gap-4">
-              <CircleUserRound />
+              <AccountDropdown />
                 <span className="">{user && user.displayName ? `Hello, ${user.displayName}` : <SetName />}</span>
             </div>
           </header>
