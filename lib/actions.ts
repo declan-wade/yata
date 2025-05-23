@@ -7,6 +7,22 @@ import { stackServerApp } from "@/stack";
 
 const prisma = new PrismaClient();
 
+export async function setUserName(name: string): Promise<void> {
+  try {
+    const user = await stackServerApp.getUser();
+    if (!user) {
+      throw new Error("User not found");
+    }
+    await user.update({
+      displayName: name,
+    });
+  }
+  catch (error) {
+    console.error("Error setting user name:", error);
+    throw new Error("Failed to set user name");
+  }
+}
+
 // Server action to update a todo's status
 export async function updateTodoStatus(
   id: number,

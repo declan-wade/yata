@@ -66,7 +66,6 @@ export function AppSidebar({ todos, tags, ...props }: { todos: any[] } & { tags:
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-black">YATA</span>
-                  <span className="">Home</span>
                 </div>
               </a>
             </SidebarMenuButton>

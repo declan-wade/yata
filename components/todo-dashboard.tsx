@@ -13,6 +13,9 @@ import {
 import { updateTodoStatus, deleteTodo } from "@/lib/actions";
 import type { Todo, TodoDashboardProps } from "@/lib/types";
 import { getAllTodos } from "@/lib/database";
+import { useUser } from "@stackframe/stack";
+import { SetName } from "./set-name";
+import { CircleUserRound } from "lucide-react";
 
 export default function TodoDashboard({
   initialTodos,
@@ -23,6 +26,7 @@ export default function TodoDashboard({
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [leftOpen, setLeftOpen] = useState(true);
   const [rightOpen, setRightOpen] = useState(false);
+  const user = useUser();
 
   // Handler for toggling todo completion
   const handleToggleComplete = async (id: number, completed: boolean) => {
@@ -82,12 +86,18 @@ export default function TodoDashboard({
       <SidebarProvider open={leftOpen} onOpenChange={setLeftOpen}>
         <AppSidebar todos={todos} tags={tags} />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between">
+            <div className="flex h-16 shrink-0 items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <div>
               Today is{" "}
               <strong>{format(new Date(), "eeee dd MMMM yyyy")}</strong>
+            </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <CircleUserRound />
+                <span className="">{user && user.displayName ? `Hello, ${user.displayName}` : <SetName />}</span>
             </div>
           </header>
           <TodoList
@@ -97,6 +107,7 @@ export default function TodoDashboard({
             onSelectTodo={handleSelectTodo}
             onToggleComplete={handleToggleComplete}
             onDeleteTodo={handleDeleteTodo}
+            onTodoAdded={refreshTodos}
           />
         </SidebarInset>
       </SidebarProvider>
