@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import * as Icons from "lucide-react"; // imports all icons as a dictionary
 
 import {
@@ -40,10 +41,10 @@ export function NavMain({
               <SidebarMenuItem>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground flex items-center justify-between">
-                    <a href={item.url} className="flex items-center gap-2">
+                    <Link href={item.url} className="flex items-center gap-2">
                       {item.title}
                       {Icon ? <Icon className="ml-1 h-4" /> : null}
-                    </a>
+                    </Link>
                     {typeof item.count === "number" && item.count > 0 && (
                       <span
                         className="ml-3 inline-flex min-w-[1.5rem] justify-center rounded-full bg-red-400 px-2 py-0.5 text-xs font-semibold text-white animate-fade-in"

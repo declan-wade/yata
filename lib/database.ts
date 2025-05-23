@@ -1,7 +1,8 @@
 "use server";
 import { PrismaClient } from "@prisma/client";
 import { Todo, TodoTag } from "@/lib/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { unstable_cache as cache } from 'next/cache';
 import { stackServerApp } from "@/stack";
 
 const prisma = new PrismaClient();
@@ -29,7 +30,7 @@ export async function createTodo(
   }
     });
     // Revalidate the homepage to refresh server data
-    revalidatePath("/");
+    revalidateTag("todos");
     return response;
   } else {
     const response = await prisma.todo.create({
@@ -40,30 +41,34 @@ export async function createTodo(
       },
     });
     // Revalidate the homepage to refresh server data
-    revalidatePath("/");
+    revalidateTag("todos");
     return response;
   }
 }
 
-export async function getAllTodos() {
-  const user = await stackServerApp.getUser();
-  if (!user?.id) {
-    throw new Error("User not authenticated");
-  }
-  const response = await prisma.todo.findMany({
-    where: {
-       userId: user.id,
-    },
-    include: {
-      tags: true,
-    },
-    orderBy: {
-      order: "asc",
-    },
-  });
-  console.log(response);
-  return response as any;
-}
+export const getAllTodos = cache(
+  async () => {
+    const user = await stackServerApp.getUser();
+    if (!user?.id) {
+      throw new Error("User not authenticated");
+    }
+    const response = await prisma.todo.findMany({
+      where: {
+         userId: user.id,
+      },
+      include: {
+        tags: true,
+      },
+      orderBy: {
+        order: "asc",
+      },
+    });
+    // console.log(response); // It's good practice to remove or comment out console.logs in production code
+    return response as any; // Consider defining a proper type instead of 'any' in the future
+  },
+  ['all_todos'], // Cache key prefix
+  { tags: ['todos'] } // Cache tag
+);
 
 export async function getInboxTodos() {
   const user = await stackServerApp.getUser();
@@ -106,22 +111,26 @@ export async function getTodayTodos() {
       order: "asc",
     },
   });
-  console.log(response);
+  // console.log(response);
   return response as any;
 }
 
-export async function getAllTags() {
-  const user = await stackServerApp.getUser();
-  if (!user?.id) {
-    throw new Error("User not authenticated");
-  }
-  const response = await prisma.tag.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
-  return response as any;
-}
+export const getAllTags = cache(
+  async () => {
+    const user = await stackServerApp.getUser();
+    if (!user?.id) {
+      throw new Error("User not authenticated");
+    }
+    const response = await prisma.tag.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
+    return response as any; // Consider defining a proper type
+  },
+  ['all_tags'], // Cache key prefix
+  { tags: ['tags'] } // Cache tag
+);
 
 export async function createTag(name: string, icon: string | undefined) {
   const user = await stackServerApp.getUser();
