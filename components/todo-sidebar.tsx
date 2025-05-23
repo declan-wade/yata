@@ -57,7 +57,7 @@ export function TodoSidebar({ selectedTodo, onClose }: TodoSidebarProps) {
   };
 
   return (
-    <Sidebar side="right" collapsible="offcanvas" variant="sidebar">
+    <Sidebar side="right">
       <SidebarHeader className="bg-background border-b h-16"></SidebarHeader>
       <SidebarContent>
         <SidebarMenu>

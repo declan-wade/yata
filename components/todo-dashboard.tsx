@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { format, set } from "date-fns";
 import { AppSidebar } from "@/components/app-sidebar";
 import { TodoList } from "@/components/todo-list";
@@ -12,11 +12,8 @@ import {
 } from "@/components/ui/sidebar";
 import { updateTodoStatus, deleteTodo } from "@/lib/actions";
 import type { Todo, TodoDashboardProps } from "@/lib/types";
-import { getAllTodos } from "@/lib/database";
 import { useUser } from "@stackframe/stack";
 import { SetName } from "./set-name";
-import { CircleUserRound } from "lucide-react";
-import { Button } from "./ui/button";
 import { AccountDropdown } from "./account-dropdown";
 
 export default function TodoDashboard({
@@ -30,14 +27,17 @@ export default function TodoDashboard({
   const [rightOpen, setRightOpen] = useState(false);
   const user = useUser();
 
+  useEffect(() => {
+    setTodos(initialTodos);
+  }, [initialTodos]);
+
   // Handler for toggling todo completion
   const handleToggleComplete = async (id: number, completed: boolean) => {
     console.log("Toggling todo completion:", id, completed);
     try {
       // Use server action to update todo
-      const updatedTodo = await updateTodoStatus(id, completed);
-
-      refreshTodos();
+      await updateTodoStatus(id, completed);
+      // The useEffect above will handle updating the 'todos' state when 'initialTodos' prop changes
     } catch (error) {
       console.error("Failed to update todo:", error);
     }
@@ -78,11 +78,6 @@ export default function TodoDashboard({
     setRightOpen(false);
   };
 
-  const refreshTodos = async () => {
-    const todos: Todo[] = await getAllTodos();
-    setTodos(todos);
-  }
-
   return (
     <SidebarProvider open={rightOpen} onOpenChange={setRightOpen}>
       <SidebarProvider open={leftOpen} onOpenChange={setLeftOpen}>
@@ -111,7 +106,7 @@ export default function TodoDashboard({
             onSelectTodo={handleSelectTodo}
             onToggleComplete={handleToggleComplete}
             onDeleteTodo={handleDeleteTodo}
-            onTodoAdded={refreshTodos}
+           // onTodoAdded={() => { /* Server revalidation will handle list update */ }}
           />
         </SidebarInset>
       </SidebarProvider>

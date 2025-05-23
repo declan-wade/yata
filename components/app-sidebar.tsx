@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Link from 'next/link';
 import { GalleryVerticalEnd, Settings, Star, Tags } from "lucide-react";
 import * as Icons from "lucide-react";
 import { NavMain } from "@/components/nav-main";
@@ -65,7 +66,7 @@ export function AppSidebar({
       setCounts(newCounts);
     }
     fetchCounts();
-  }, [todos]);
+  }, []);
 
   // Pass counts to NavMain
   const navItemsWithCounts = navMain.map(({ key, ...item }) => ({
@@ -79,14 +80,14 @@ export function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="/">
+              <Link href="/">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-black">YATA</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -131,6 +132,18 @@ export function AppSidebar({
                                     {item.count}
                                   </span>
                                 )}
+                              <Link href={`/tag/${item.id}`} className="flex items-center gap-2">
+                                {item.name}
+                                {Icon ? <Icon className="ml-1 h-4" /> : null}
+                              </Link>
+                              {typeof item.count === "number" && item.count > 0 && (
+                                <span
+                                  className="ml-3 inline-flex min-w-[1.5rem] justify-center rounded-full bg-red-400 px-2 py-0.5 text-xs font-semibold text-white animate-fade-in"
+                                  style={{ animation: "fade-in 0.4s cubic-bezier(0.4,0,0.2,1)" }}
+                                >
+                                  {item.count}
+                                </span>
+                              )}
                             </SidebarMenuButton>
                           </DropdownMenuTrigger>
                         </SidebarMenuItem>
@@ -150,7 +163,7 @@ export function AppSidebar({
               <SidebarMenuItem>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                    <a href="/tags">Manage tags</a>
+                    <Link href="/tags">Manage tags</Link>
                     <Tags className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
@@ -158,7 +171,7 @@ export function AppSidebar({
               <SidebarMenuItem>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                    <a href="/settings">Settings</a>
+                    <Link href="/settings">Settings</Link>
                     <Settings className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
