@@ -46,15 +46,12 @@ export async function createTodo(
   }
 }
 
-export const getAllTodos = cache(
-  async () => {
-    const user = await stackServerApp.getUser();
-    if (!user?.id) {
-      throw new Error("User not authenticated");
-    }
+// Create a cached function that accepts userId as a parameter
+const getCachedTodos = cache(
+  async (userId: string) => {
     const response = await prisma.todo.findMany({
       where: {
-         userId: user.id,
+         userId: userId,
       },
       include: {
         tags: true,
@@ -63,12 +60,20 @@ export const getAllTodos = cache(
         order: "asc",
       },
     });
-    // console.log(response); // It's good practice to remove or comment out console.logs in production code
-    return response as any; // Consider defining a proper type instead of 'any' in the future
+    return response as any;
   },
   ['all_todos'], // Cache key prefix
   { tags: ['todos'] } // Cache tag
 );
+
+// Wrapper function that handles authentication
+export async function getAllTodos() {
+  const user = await stackServerApp.getUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+  return getCachedTodos(user.id);
+}
 
 export async function getInboxTodos() {
   const user = await stackServerApp.getUser();
@@ -115,22 +120,28 @@ export async function getTodayTodos() {
   return response as any;
 }
 
-export const getAllTags = cache(
-  async () => {
-    const user = await stackServerApp.getUser();
-    if (!user?.id) {
-      throw new Error("User not authenticated");
-    }
+// Create a cached function that accepts userId as a parameter
+const getCachedTags = cache(
+  async (userId: string) => {
     const response = await prisma.tag.findMany({
       where: {
-        userId: user.id,
+        userId: userId,
       },
     });
-    return response as any; // Consider defining a proper type
+    return response as any;
   },
   ['all_tags'], // Cache key prefix
   { tags: ['tags'] } // Cache tag
 );
+
+// Wrapper function that handles authentication
+export async function getAllTags() {
+  const user = await stackServerApp.getUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+  return getCachedTags(user.id);
+}
 
 export async function createTag(name: string, icon: string | undefined) {
   const user = await stackServerApp.getUser();
@@ -146,7 +157,6 @@ export async function createTag(name: string, icon: string | undefined) {
   });
   return response;
 }
-
 
 export async function getFilteredTodo(tag: string) {
   const user = await stackServerApp.getUser();

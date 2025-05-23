@@ -12,11 +12,8 @@ import {
 } from "@/components/ui/sidebar";
 import { updateTodoStatus, deleteTodo } from "@/lib/actions";
 import type { Todo, TodoDashboardProps } from "@/lib/types";
-import { getAllTodos } from "@/lib/database";
 import { useUser } from "@stackframe/stack";
 import { SetName } from "./set-name";
-import { CircleUserRound } from "lucide-react";
-import { Button } from "./ui/button";
 import { AccountDropdown } from "./account-dropdown";
 
 export default function TodoDashboard({
@@ -107,7 +104,7 @@ export default function TodoDashboard({
             onSelectTodo={handleSelectTodo}
             onToggleComplete={handleToggleComplete}
             onDeleteTodo={handleDeleteTodo}
-            onTodoAdded={() => { /* Server revalidation will handle list update */ }}
+           // onTodoAdded={() => { /* Server revalidation will handle list update */ }}
           />
         </SidebarInset>
       </SidebarProvider>
