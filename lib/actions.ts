@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache as cache } from "next/cache";
 import { Todo } from "./types";
 import { PrismaClient } from "@prisma/client";
 import { stackServerApp } from "@/stack";
@@ -36,7 +36,7 @@ export async function updateTodoStatus(
     });
 
     // Revalidate the homepage to refresh server data
-    revalidatePath("/");
+    revalidateTag("todos");
 
     return updatedTodo;
   } catch (error) {
@@ -53,7 +53,7 @@ export async function deleteTodo(id: number): Promise<{ success: boolean }> {
     // await db.todos.delete({ where: { id } });
 
     // Revalidate the homepage to refresh server data
-    revalidatePath("/");
+    revalidateTag("todos");
 
     return { success: true };
   } catch (error) {
@@ -80,7 +80,7 @@ export async function updateTodo(
     });
 
     // Revalidate the homepage to refresh server data
-    revalidatePath("/");
+    revalidateTag("todos");
 
     return updatedTodo;
   } catch (error) {
@@ -89,9 +89,10 @@ export async function updateTodo(
   }
 }
 
-export async function getCount(): Promise<any> {
-  try {
-    const inbox = await prisma.todo.count({
+export const getCount = cache(
+  async (): Promise<any> => {
+    try {
+      const inbox = await prisma.todo.count({
       where: {
         dueDate: null,
         isComplete: false,
@@ -124,13 +125,15 @@ export async function getCount(): Promise<any> {
       },
     });
     // Return the counts as an object
-    revalidatePath("/");
     return {inbox: inbox, dueToday: dueToday, dueThisWeek: dueThisWeek, overdue: overdue};
   } catch (error) {
     console.error("Error fetching count:", error);
     throw new Error("Failed to fetch count");
   }
-}
+},
+  ['todo_counts'],
+  { revalidate: 60 }
+);
 
 // Server action to update the order of todos
 export async function updateTodoOrder(
@@ -146,7 +149,7 @@ export async function updateTodoOrder(
       ),
     );
 
-    revalidatePath("/");
+    revalidateTag("todos");
   } catch (error) {
     console.error("Error updating todo order:", error);
     throw new Error("Failed to update todo order");
