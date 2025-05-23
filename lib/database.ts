@@ -23,11 +23,11 @@ export async function createTodo(
         dueDate: date,
         tags: {
           connect: {
-            id: tag,  // Connect the tag by its ID    
+            id: tag, // Connect the tag by its ID
           },
+        },
+        userId: user.id,
       },
-      userId: user.id,
-  }
     });
     // Revalidate the homepage to refresh server data
     revalidateTag("todos");
@@ -37,7 +37,7 @@ export async function createTodo(
       data: {
         name: name,
         dueDate: date,
-         userId: user.id,
+        userId: user.id,
       },
     });
     // Revalidate the homepage to refresh server data
@@ -72,7 +72,19 @@ export async function getAllTodos() {
   if (!user?.id) {
     throw new Error("User not authenticated");
   }
-  return getCachedTodos(user.id);
+  const response = await prisma.todo.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      tags: true,
+    },
+    orderBy: {
+      order: "asc",
+    },
+  });
+  console.log(response);
+  return response as any;
 }
 
 export async function getInboxTodos() {
@@ -81,10 +93,10 @@ export async function getInboxTodos() {
     throw new Error("User not authenticated");
   }
   const response = await prisma.todo.findMany({
-   where: {
-        dueDate: null,
-        userId: user.id,
-      },
+    where: {
+      dueDate: null,
+      userId: user.id,
+    },
     include: {
       tags: true,
     },
@@ -102,13 +114,13 @@ export async function getTodayTodos() {
     throw new Error("User not authenticated");
   }
   const response = await prisma.todo.findMany({
-  where: {
-        dueDate: {
-          gte: new Date(new Date().setHours(0, 0, 0, 0)),
-          lte: new Date(new Date().setHours(23, 59, 59, 999)),
-        },
-         userId: user.id,
+    where: {
+      dueDate: {
+        gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        lte: new Date(new Date().setHours(23, 59, 59, 999)),
       },
+      userId: user.id,
+    },
     include: {
       tags: true,
     },
@@ -171,7 +183,7 @@ export async function getFilteredTodo(tag: string) {
         },
       },
       userId: user.id,
-  },
+    },
     include: {
       tags: true,
     },

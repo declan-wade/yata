@@ -82,41 +82,40 @@ export function TagManagement({
 
   return (
     <>
-    <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-4">
         <h2 className="text-2xl font-bold">My Tags</h2>
         <div className="flex items-center">
           <Button
-          onClick={() => setIsCreateDialogOpen(true)}
-          size="sm"
-          className="h-8"
-        >
-          <Plus className="mr-1 h-4 w-4" />
-          New Tag
-        </Button>
+            onClick={() => setIsCreateDialogOpen(true)}
+            size="sm"
+            className="h-8"
+          >
+            <Plus className="mr-1 h-4 w-4" />
+            New Tag
+          </Button>
         </div>
       </div>
       <Separator className="p-0 m-0" />
-      
-        {tags.length === 0 ? (
-          <div className="text-center text-muted-foreground">
-            <p>No tags available.</p>
-            <p className="text-sm mt-1">
-              Create tags to organize your todos better.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {tags.map((tag) => (
-              <TagItem
-                key={tag.id}
-                tag={tag}
-                onEdit={() => openEditDialog(tag)}
-                onDelete={() => onDeleteTag(tag.id)}
-              />
-            ))}
-          </div>
-        )}
-     
+
+      {tags.length === 0 ? (
+        <div className="text-center text-muted-foreground">
+          <p>No tags available.</p>
+          <p className="text-sm mt-1">
+            Create tags to organize your todos better.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {tags.map((tag) => (
+            <TagItem
+              key={tag.id}
+              tag={tag}
+              onEdit={() => openEditDialog(tag)}
+              onDelete={() => onDeleteTag(tag.id)}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Create Tag Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>

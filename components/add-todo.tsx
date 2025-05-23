@@ -15,7 +15,8 @@ import {
 import { createTodo } from "@/lib/database";
 import type { AddTodoProps } from "@/lib/types"; // Import AddTodoProps
 
-export function AddTodo({ tags, onTodoAdded }: AddTodoProps) { // Use AddTodoProps
+export function AddTodo({ tags, onTodoAdded }: AddTodoProps) {
+  // Use AddTodoProps
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [name, setName] = React.useState("");
   const [tag, setTag] = React.useState<number | undefined>(undefined);
@@ -52,7 +53,7 @@ export function AddTodo({ tags, onTodoAdded }: AddTodoProps) { // Use AddTodoPro
         className="shadow-none md:col-span-6"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        onKeyDown={(e) =>e.key === "Enter" ? handleAdd() : null}
+        onKeyDown={(e) => (e.key === "Enter" ? handleAdd() : null)}
       />
       <div className="md:col-span-3">
         <DateTimePicker value={date} onChange={setDate} />

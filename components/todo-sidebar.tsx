@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-  Clock,
-  Cross,
-  GalleryVerticalEnd,
-  Settings,
-  Star,
-  Tags,
-  Trash,
-  X,
-} from "lucide-react";
-import { NavMain } from "@/components/nav-main";
+import { Clock, Trash, X } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -29,19 +19,18 @@ import { useState } from "react";
 import { DateTimePicker } from "./datetime-picker";
 import { updateTodo } from "@/lib/actions";
 
-export function TodoSidebar({
-  selectedTodo,
-  allTags,
-  onClose,
-  onMarkComplete,
-  onDeleteTodo,
-}: TodoSidebarProps) {
+export function TodoSidebar({ selectedTodo, onClose }: TodoSidebarProps) {
   // Track which field is being edited
-  const [editingField, setEditingField] = useState<null | "name" | "dueDate" | "description">(null);
+  const [editingField, setEditingField] = useState<
+    null | "name" | "dueDate" | "description"
+  >(null);
   const [editValue, setEditValue] = useState<string>("");
 
   // Helper to start editing a field
-  const startEditing = (field: "name" | "dueDate" | "description", value: string) => {
+  const startEditing = (
+    field: "name" | "dueDate" | "description",
+    value: string,
+  ) => {
     setEditingField(field);
     setEditValue(value);
   };
@@ -58,7 +47,7 @@ export function TodoSidebar({
 
     try {
       await updateTodo(selectedTodo.id, updateData);
-     // onMarkComplete(); // Refresh UI
+      // onMarkComplete(); // Refresh UI
     } catch (error) {
       console.error("Failed to update todo:", error);
       // Optionally, handle error display to the user
@@ -80,9 +69,9 @@ export function TodoSidebar({
                   className="font-medium text-md"
                   value={editValue}
                   autoFocus
-                  onChange={e => setEditValue(e.target.value)}
+                  onChange={(e) => setEditValue(e.target.value)}
                   onBlur={saveEdit}
-                  onKeyDown={e => e.key === "Enter" && saveEdit()}
+                  onKeyDown={(e) => e.key === "Enter" && saveEdit()}
                 />
               ) : (
                 <span
@@ -102,7 +91,9 @@ export function TodoSidebar({
                   className="text-sm"
                   value={editValue ? new Date(editValue) : undefined}
                   autoFocus
-                  onChange={date => setEditValue(date ? date.toISOString().slice(0, 16) : "")}
+                  onChange={(date) =>
+                    setEditValue(date ? date.toISOString().slice(0, 16) : "")
+                  }
                 />
               ) : (
                 <span
@@ -111,12 +102,15 @@ export function TodoSidebar({
                     startEditing(
                       "dueDate",
                       selectedTodo?.dueDate
-                        ? new Date(selectedTodo.dueDate).toISOString().slice(0, 16)
-                        : ""
+                        ? new Date(selectedTodo.dueDate)
+                            .toISOString()
+                            .slice(0, 16)
+                        : "",
                     )
                   }
                 >
-                  <Clock className="h-4" />Due:{" "}
+                  <Clock className="h-4" />
+                  Due:{" "}
                   {selectedTodo?.dueDate
                     ? format(selectedTodo.dueDate, "HH:mm dd MMMM yyyy")
                     : ""}
@@ -132,14 +126,16 @@ export function TodoSidebar({
                   className="text-sm"
                   value={editValue}
                   autoFocus
-                  onChange={e => setEditValue(e.target.value)}
+                  onChange={(e) => setEditValue(e.target.value)}
                   onBlur={saveEdit}
-                  onKeyDown={e => e.key === "Enter" && saveEdit()}
+                  onKeyDown={(e) => e.key === "Enter" && saveEdit()}
                 />
               ) : (
                 <span
                   className="text-sm cursor-pointer"
-                  onClick={() => startEditing("description", selectedTodo?.description || "")}
+                  onClick={() =>
+                    startEditing("description", selectedTodo?.description || "")
+                  }
                 >
                   {selectedTodo?.description}
                 </span>
@@ -164,13 +160,16 @@ export function TodoSidebar({
                 : " "}
             </p>
           </SidebarGroupContent>
-          </SidebarGroup>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarMenu>
             <DropdownMenu key="1">
               <SidebarMenuItem>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton onClick={onClose} className="data-[state=open]:bg-primary bg-primary data-[state=open]:text-sidebar-accent-foreground hover:invert mb-2">
+                  <SidebarMenuButton
+                    onClick={onClose}
+                    className="data-[state=open]:bg-primary bg-primary data-[state=open]:text-sidebar-accent-foreground hover:invert mb-2"
+                  >
                     <div className="text-white dark:text-black">Close</div>
                     <X className="ml-auto text-white dark:text-black" />
                   </SidebarMenuButton>

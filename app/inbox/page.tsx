@@ -1,5 +1,5 @@
 // app/page.tsx - Server Component
-import { getAllTodos, getAllTags, getInboxTodos } from "@/lib/database";
+import { getAllTags, getInboxTodos } from "@/lib/database";
 import TodoDashboard from "@/components/todo-dashboard";
 import { Todo, TodoTag } from "@/lib/types";
 

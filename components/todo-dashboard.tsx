@@ -94,7 +94,9 @@ export default function TodoDashboard({
             </div>
             <div className="flex items-center gap-4">
               <AccountDropdown />
-                <span className="">{user && user.displayName ? `Hello, ${user.displayName}` : <SetName />}</span>
+              <span className="hidden lg:block">
+                {user && user.displayName ? `Hello, ${user.displayName}` : <SetName />}
+              </span>
             </div>
           </header>
           <TodoList
