@@ -1,6 +1,5 @@
 "use client";
 
-import Link from 'next/link';
 import * as Icons from "lucide-react"; // imports all icons as a dictionary
 import {
   DropdownMenu,
@@ -33,6 +32,7 @@ export function NavMain({
     <SidebarMenu>
       {items.map((item) => {
         const Icon: any = item.icon ? Icons[item.icon] : null;
+
         return (
           <DropdownMenu key={item.title}>
             <SidebarMenuItem>
@@ -58,3 +58,6 @@ export function NavMain({
           </DropdownMenu>
         );
       })}
+    </SidebarMenu>
+  );
+}
